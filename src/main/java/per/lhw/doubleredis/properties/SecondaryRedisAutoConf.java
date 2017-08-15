@@ -1,7 +1,6 @@
 package per.lhw.doubleredis.properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -87,7 +86,7 @@ public class SecondaryRedisAutoConf {
 
     private JedisPoolConfig jedisPoolConfig() {
         JedisPoolConfig config = new JedisPoolConfig();
-        RedisProperties.Pool props = this.secondaryRedisProperties.getPool();
+        SecondaryRedisProperties.Pool props = this.secondaryRedisProperties.getPool();
         config.setMaxTotal(props.getMaxActive());
         config.setMaxIdle(props.getMaxIdle());
         config.setMinIdle(props.getMinIdle());

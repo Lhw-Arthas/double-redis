@@ -29,4 +29,10 @@ public class DoubleRedisApplicationTests {
         Map<String, String> map = primaryRedisService.multiGet("");
         secondaryRedisService.multiSet(map);
     }
+
+    @Test
+    public void primaryOneToSecondaryOne() throws Exception {
+        primaryRedisService.set("2", "222");
+        secondaryRedisService.set("2", "222");
+    }
 }

@@ -1,6 +1,5 @@
 package per.lhw.doubleredis.properties;
 
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;
@@ -45,11 +44,11 @@ public class SecondaryRedisProperties {
      */
     private int timeout;
 
-    private RedisProperties.Pool pool;
+    private SecondaryRedisProperties.Pool pool;
 
-    private RedisProperties.Sentinel sentinel;
+    private SecondaryRedisProperties.Sentinel sentinel;
 
-    private RedisProperties.Cluster cluster;
+    private SecondaryRedisProperties.Cluster cluster;
 
     public int getDatabase() {
         return this.database;
@@ -107,27 +106,27 @@ public class SecondaryRedisProperties {
         return this.timeout;
     }
 
-    public RedisProperties.Sentinel getSentinel() {
+    public SecondaryRedisProperties.Sentinel getSentinel() {
         return this.sentinel;
     }
 
-    public void setSentinel(RedisProperties.Sentinel sentinel) {
+    public void setSentinel(SecondaryRedisProperties.Sentinel sentinel) {
         this.sentinel = sentinel;
     }
 
-    public RedisProperties.Pool getPool() {
+    public SecondaryRedisProperties.Pool getPool() {
         return this.pool;
     }
 
-    public void setPool(RedisProperties.Pool pool) {
+    public void setPool(SecondaryRedisProperties.Pool pool) {
         this.pool = pool;
     }
 
-    public RedisProperties.Cluster getCluster() {
+    public SecondaryRedisProperties.Cluster getCluster() {
         return this.cluster;
     }
 
-    public void setCluster(RedisProperties.Cluster cluster) {
+    public void setCluster(SecondaryRedisProperties.Cluster cluster) {
         this.cluster = cluster;
     }
 
