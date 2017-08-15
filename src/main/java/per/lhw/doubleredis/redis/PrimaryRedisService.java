@@ -48,6 +48,7 @@ public class PrimaryRedisService {
     public Map<String, String> multiGet(String prefix) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start("multiGet");
+        log.info("开始执行keys");
         Set<String> stringSet = stringRedisTemplate.keys(prefix + "*");
         log.info("keys执行完毕，大小为{}", stringSet.size());
         int size = stringSet.size();
