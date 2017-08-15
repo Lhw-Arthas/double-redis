@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,13 +53,13 @@ public class PrimaryRedisService {
         int size = stringSet.size();
         Map<String, String> kvMap = new HashMap<>();
         for (int i = 0; i < size; ) {
-            List<String> strings = stringSet.stream().skip(i).limit(500000).collect(Collectors.toList());
+            List<String> strings = stringSet.stream().skip(i).limit(200000).collect(Collectors.toList());
             log.info("开始取redis数据，起始位置：{}，key的数量：{}", i, strings.size());
             List<String> values = stringRedisTemplate.opsForValue().multiGet(strings);
             for (int j = 0; j < strings.size(); j++) {
                 kvMap.put(strings.get(j), values.get(j));
             }
-            i += 500000;
+            i += 200000;
         }
         stopWatch.stop();
         log.info("value读取完毕，已组合成Map");
@@ -67,7 +68,25 @@ public class PrimaryRedisService {
     }
 
     public void multiSet(Map<String, String> map) {
-        stringRedisTemplate.opsForValue().multiSet(map);
+        int size = map.size();
+        Map<String, String> tempMap = new HashMap<>();
+        int count = 1;
+        List<Map.Entry<String, String>> a;
+        for (int i = 0; i < size; ) {
+            a = map.entrySet().stream().skip(i).limit(100000).collect(Collectors.toList());
+            a.forEach(stringStringEntry -> {
+                if (!StringUtils.isEmpty(stringStringEntry.getKey()) && !StringUtils.isEmpty(stringStringEntry.getValue())) {
+                    tempMap.put(stringStringEntry.getKey(), stringStringEntry.getValue());
+                } else {
+                    log.warn("key or value null, Key is {} , Value is {} ", stringStringEntry.getKey(), stringStringEntry.getValue());
+                }
+            });
+            stringRedisTemplate.opsForValue().multiSet(tempMap);
+            log.info("写入第{}次100000条数据成功", count + 1);
+            tempMap.clear();
+            i += 100000;
+            ++count;
+        }
     }
 
 }
