@@ -1,11 +1,15 @@
 package per.lhw.doubleredis.properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.connection.jedis.JedisConnection;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.util.StringUtils;
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.net.URI;
@@ -17,6 +21,7 @@ import java.net.UnknownHostException;
  */
 @Primary
 @Configuration
+@ConditionalOnClass({JedisConnection.class, RedisOperations.class, Jedis.class})
 @EnableConfigurationProperties(PrimaryRedisProperties.class)
 public class PrimaryRedisAutoConf {
 
